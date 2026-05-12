@@ -1,0 +1,172 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Birthday Invitation 🎉</title>
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<style>
+*{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+body{
+  min-height:100vh;
+  background:linear-gradient(to bottom,#fbc2eb,#a6c1ee);
+  display:flex;
+  justify-content:center;
+  align-items:center;
+  overflow:hidden;
+}
+.float{
+  position:absolute;
+  bottom:-100px;
+  animation:floatUp linear infinite;
+  animation-timing-function:ease-in-out;
+  opacity:.9;
+  user-select:none;
+  pointer-events:none;
+}
+@keyframes floatUp{
+  to{transform:translateY(-120vh) rotate(360deg);opacity:0;}
+}
+.card{
+  width:500px;
+  height:540px;
+  background:#fff;
+  border-radius:25px;
+  padding:25px;
+  text-align:center;
+  box-shadow:0 20px 50px rgba(0,0,0,.25);
+  z-index:5;
+  overflow:hidden;
+  max-height:150px; /* initially chhota */
+  transition: max-height 1s ease, padding 0.8s ease;
+}
+.card.expanded{
+  max-height:1200px; /* enough for all content */
+  padding:35px;
+}
+.step{
+  opacity:0;
+  transform:translateY(20px);
+  transition:1s ease;
+}
+.step.show{
+  opacity:1;
+  transform:translateY(0);
+}
+.title{
+  font-size:28px;
+  color:#ff5f6d;
+  margin-bottom:15px;
+  font-weight:700;
+  text-shadow: 0 0 5px #ff5f6d, 0 0 10px #ffb347;
+  animation: glow 2s infinite alternate;
+}
+@keyframes glow{
+  0%{text-shadow:0 0 5px #ff5f6d, 0 0 10px #ffb347;}
+  50%{text-shadow:0 0 10px #ff5f6d, 0 0 20px #ffb347;}
+  100%{text-shadow:0 0 5px #ff5f6d, 0 0 10px #ffb347;}
+}
+.names{font-size:32px;color:#845ec2;margin:20px 0;font-weight:600;}
+.invite-text{font-size:15px;color:#555;line-height:1.7;margin-top:10px;text-align:left;}
+.footer{margin-top:20px;border-top:2px dashed #ffd700;padding-top:10px;color:#b8860b;font-size:14px;}
+.footer span{display:block;font-size:12px;margin-top:4px;}
+button{
+  padding:14px 32px;border:none;border-radius:30px;
+  background:linear-gradient(45deg,#ff5f6d,#ffc371);
+  color:#fff;font-size:16px;cursor:pointer;transition:.3s;margin-top:10px;
+}
+button:hover{transform:scale(1.1);}
+.card:hover{
+  box-shadow:0 30px 60px rgba(0,0,0,0.3);
+  transform: translateY(-5px);
+}
+#audioControl{
+  margin-top:10px;
+  background: #845ec2;
+}
+</style>
+</head>
+<body>
+
+<!-- AUDIO WITH PUBLIC LINK -->
+<audio id="birthdaySong" preload="auto" loop>
+  <source src="https://archive.org/download/78_happy-birthday-song_gbia0534279/01%20-%20HAPPY%20BIRTHDAY%20SONG%20-%20Part%201.mp3" type="audio/mpeg">
+  Your browser does not support the audio element.
+</audio>
+
+<script>
+// Floating background emojis
+const items=["🎈","🎉","🧸","⭐","🎀","🎊"];
+for(let i=0;i<60;i++){
+    let el=document.createElement("div");
+    el.className="float";
+    el.innerHTML=items[Math.floor(Math.random()*items.length)];
+    el.style.left=Math.random()*100+"vw";
+    el.style.fontSize=20+Math.random()*35+"px";
+    el.style.animationDuration=5+Math.random()*6+"s";
+    document.body.appendChild(el);
+}
+</script>
+
+<div class="card" id="card">
+    <div class="title step show">🎉 Birthday Invitation 🎉</div>
+    <button id="openBtn">Open Invitation</button>
+    <button id="audioControl">Play / Pause Song</button>
+
+    <div class="names step" id="names">🎀 Jannat Fatima & 🍼 Muhammad Orhan</div>
+    <div class="invite-text step" id="inviteText">
+        We are delighted to invite you to celebrate the joyful birthday party of our
+        little stars <strong>Jannat Fatima (2 Years)</strong> and <strong>Orhan (1 Year)</strong>.  
+        Come and enjoy an evening full of fun, games, cake, colorful balloons, and unforgettable memories!
+    </div>
+    <div class="footer step" id="footer">
+        📅 <strong>Date:</strong> 28 December 2025<br>
+        📅 <strong>Day:</strong> Sunday <br>
+        ⏰ <strong>Time:</strong> 5:00 PM<br>
+        📍 <strong>Venue:</strong> Home Sweet Home<br><br>
+        💌 <strong>Invited by: Hamza Shahzad </strong>
+        <span>👨‍💻 Developer: Muhammad Umar Mughal</span>
+    </div>
+</div>
+
+<script>
+const song = document.getElementById("birthdaySong");
+const card = document.getElementById("card");
+const steps = [
+    document.getElementById("names"),
+    document.getElementById("inviteText"),
+    document.getElementById("footer")
+];
+
+document.getElementById("openBtn").addEventListener("click", function() {
+    // Expand card smoothly
+    card.classList.add("expanded");
+
+    // Show content step by step
+    steps.forEach((el,i)=> setTimeout(()=> el.classList.add("show"), i*700));
+
+    // Play audio reliably
+    song.currentTime = 0;
+    song.play().catch(err => console.log("Audio play blocked:", err));
+
+    // Confetti
+    const confettiItems = ["🎉","🎈","✨","💖","🎊"];
+    for(let i=0;i<40;i++){
+        let el = document.createElement("div");
+        el.className="float";
+        el.innerHTML = confettiItems[Math.floor(Math.random()*confettiItems.length)];
+        el.style.left = Math.random()*100+"vw";
+        el.style.fontSize = 15 + Math.random()*25 + "px";
+        el.style.animationDuration = 2 + Math.random()*3 + "s";
+        document.body.appendChild(el);
+    }
+});
+
+// Play / Pause Button
+document.getElementById("audioControl").addEventListener("click", function() {
+    if(song.paused) song.play();
+    else song.pause();
+});
+</script>
+
+</body>
+</html>
